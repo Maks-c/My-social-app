@@ -1,15 +1,38 @@
 import './post.css'
 import {MoreVert} from '@mui/icons-material'
-import {Users} from '../../dummyDate'
-import {useState} from "react";
+import {Link} from 'react-router-dom';
+import {useContext, useEffect, useState} from "react";
+import axios from "axios";
+import {format} from 'timeago.js'
+import {AuthContext} from "../../contex/AuthContex";
+
 
 export default function Post({post}){
-    const [like, setLike] = useState(post.like)
+    const [like, setLike] = useState(post.likes.length)
     const [isLiked, setIsLiked] = useState(false)
+    const [user, setUser] = useState({})
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER
+    const {user: currentUser} = useContext(AuthContext)
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await axios.get(`/users?userId=${post.userId}`)
+            setUser(res.data)
+        };
+        fetchUser().then(r => (r))
+    }, [post.userId])
 
     const likeHandler = () => {
-        setLike(isLiked ? like - 1 : like + 1)
-        setIsLiked(!isLiked)
+
+        try{
+            axios.put("/posts/" + post._id + "/like", {userId: currentUser._id}
+            )
+        } catch (err){
+            setLike(isLiked ? like - 1 : like + 1)
+            setIsLiked( !isLiked)
+        }
+
+
     }
 
     return (
@@ -17,10 +40,14 @@ export default function Post({post}){
             <div className="postWrapper">
                 <div className="postTop">
                     <div className="postTopLeft">
-                        <img className='postProfileImg' src={Users.filter(u => u.id === post.userId)[0].profilePicture}
-                             alt=""/>
-                        <span className="postUserName"> {Users.filter(u => u.id === post.userId)[0].username}</span>
-                        <span className="postUserDate">{post.date}</span>
+                        <Link to={`profile/${user.username}`}>
+                            <img className='postProfileImg'
+                                 src={user.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"}
+                                 alt=""/>
+                        </Link>
+
+                        <span className="postUserName"> {user.username}</span>
+                        <span className="postDate">{format(post.createdAt)}</span>
                     </div>
                     <div className="postTopRight">
                         <MoreVert/>
@@ -28,12 +55,12 @@ export default function Post({post}){
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post?.desc}</span>
-                    <img src={post.photo} alt="" className="postImg"/>
+                    <img src={PF + post.img} alt="" className="postImg"/>
                 </div>
                 <div className="postBottom">
                     <div className="postBottomLeft">
-                        <img className='likeIcon' src="/assets/like.png" onClick={likeHandler} alt=""/>
-                        <img className='likeIcon' src="/assets/heart.png" onClick={likeHandler} alt=""/>
+                        <img className='likeIcon' src={`${PF}like.png`} onClick={likeHandler} alt=""/>
+                        <img className='likeIcon' src={`${PF}heart.png`} onClick={likeHandler} alt=""/>
                         <span className="postLikeCounter"> {like} People like it</span>
                     </div>
                     <div className="postBottomRight">
