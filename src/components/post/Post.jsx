@@ -14,6 +14,11 @@ export default function Post({post}){
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const {user: currentUser} = useContext(AuthContext)
 
+    useEffect(()=>{
+        setIsLiked(post.likes.includes(currentUser._id))
+    },[post.likes, currentUser._id])
+
+
     useEffect(() => {
         const fetchUser = async () => {
             const res = await axios.get(`/users?userId=${post.userId}`)

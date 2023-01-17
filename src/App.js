@@ -1,10 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Route, Routes} from 'react-router-dom';
-import Login from "./pages/login/Login";
+// import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
-import Home from "./pages/home/Home";
-import {AuthContext} from "./contex/AuthContex";
+// import Home from "./pages/home/Home";
+// import {AuthContext} from "./contex/AuthContex";
 
 
 import HomePage from "./components/renderPage/HomePage";
