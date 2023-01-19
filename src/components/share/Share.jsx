@@ -8,21 +8,34 @@ export default function Share(){
     const {user} = useContext(AuthContext)
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const desc = useRef()
-    const [file, setFile] =useState(null)
+    const [file, setFile] = useState(null)
 
 
-const submitHandler=async (e)=>{
+    const submitHandler = async (e) => {
         e.preventDefault()
-        const newPost={
-            userId:user._id,
-            desc:desc.current.value
+        const newPost = {
+            userId: user._id,
+            desc: desc.current.value
+        }
+        if(file) {
+            const data = new FormData()
+            const fileName = Date.now() + file.name
+            data.append('file', file)
+            data.append('name', fileName)
+            newPost.img = fileName
+            try{
+                await axios.post('/upload', data)
+            } catch (e){
+                console.log(e)
+            }
+
         }
         try{
-      await axios.post('/posts',newPost)
-        }catch (e){
+            await axios.post('/posts', newPost)
+        } catch (e){
             console.log(e)
         }
-}
+    }
 
 
     return (
@@ -38,12 +51,13 @@ const submitHandler=async (e)=>{
                     />
                 </div>
                 <hr className='shareHr'/>
-                <form className="shareBottom" onSubmit={submitHandler} >
+                <form className="shareBottom" onSubmit={submitHandler}>
                     <div className="shareOptions">
                         <label htmlFor='file' className="shareOption">
                             <PermMedia htmlColor='tomato' className='shareIcon'/>
                             <span className="shareOptionText">Photo or Video</span>
-                            <input type="file" style={{display:'none'}} id="file" accept=".png,.jpeg,.jpg" onChange={(e)=>setFile(e.target.files[0])}/>
+                            <input type="file" style={{display: 'none'}} id="file" accept=".png,.jpeg,.jpg"
+                                   onChange={(e) => setFile(e.target.files[0])}/>
                         </label>
                         <div className="shareOption">
                             <Label htmlColor='blue' className='shareIcon'/>

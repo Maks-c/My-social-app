@@ -8,15 +8,16 @@ import {AuthContext} from "../../contex/AuthContex";
 
 
 export default function Post({post}){
+    console.log(post)
     const [like, setLike] = useState(post.likes.length)
     const [isLiked, setIsLiked] = useState(false)
     const [user, setUser] = useState({})
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const {user: currentUser} = useContext(AuthContext)
 
-    useEffect(()=>{
+    useEffect(() => {
         setIsLiked(post.likes.includes(currentUser._id))
-    },[post.likes, currentUser._id])
+    }, [currentUser._id, post.likes])
 
 
     useEffect(() => {
@@ -30,15 +31,14 @@ export default function Post({post}){
     const likeHandler = () => {
 
         try{
-            axios.put("/posts/" + post._id + "/like", {userId: currentUser._id}
-            )
+            axios.put("/posts/" + post._id + "/like", {userId: currentUser._id})
         } catch (err){
             setLike(isLiked ? like - 1 : like + 1)
+
             setIsLiked( !isLiked)
         }
-
-
     }
+    console.log(" работает?", like)
 
     return (
         <div className='post'>
