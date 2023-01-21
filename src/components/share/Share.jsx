@@ -1,5 +1,5 @@
 import './share.css'
-import {PermMedia, Label, Room, EmojiEmotions} from '@mui/icons-material'
+import {PermMedia, Label, Room, EmojiEmotions, Cancel} from '@mui/icons-material'
 import {AuthContext} from "../../contex/AuthContex";
 import {useContext, useRef, useState} from "react";
 import axios from "axios";
@@ -20,7 +20,7 @@ export default function Share(){
         if(file) {
             const data = new FormData()
             console.log(data)
-            const fileName =file.name
+            const fileName = file.name
             console.log(fileName)
             data.append('file', file)
             data.append('name', fileName)
@@ -54,6 +54,14 @@ export default function Share(){
                     />
                 </div>
                 <hr className='shareHr'/>
+                {file && (
+                    <div className='shareImgContainer'>
+                        <img src={URL.createObjectURL(file)} alt="" className="shareImg"/>
+                        <Cancel className='shareCancelImg' onClick={() => {
+                            setFile(null)
+                        }}/>
+                    </div>
+                )}
                 <form className="shareBottom" onSubmit={submitHandler}>
                     <div className="shareOptions">
                         <label htmlFor='file' className="shareOption">

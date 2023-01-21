@@ -12,7 +12,7 @@ export default function Profile(){
     const [user, setUser] = useState({})
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const username = useParams().username
-
+    console.log(username)
     useEffect(() => {
         const fetchUser = async () => {
             const res = await axios.get(`/users?username=${username}`)
@@ -20,7 +20,7 @@ export default function Profile(){
         };
         fetchUser().then(r => (r))
     }, [username])
-
+    console.log(user)
     return (
         <>
             <Topbar/>
