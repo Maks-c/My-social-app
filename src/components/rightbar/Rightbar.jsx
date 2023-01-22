@@ -11,24 +11,28 @@ export default function Rightbar({user}){
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const [friends, setFriends] = useState([])
     const {user: currentUser, dispatch} = useContext(AuthContext)
+    // const [followed, setFollowed] = useState(
+    //     currentUser.followings.includes(user?.id)
+    // );
+
     const [followed, setFollowed] = useState(false)
 
     useEffect(() => {
         setFollowed(currentUser.followings.includes(user?.id))
-    }, [currentUser, user.id])
-
+    }, [currentUser, user?.id])
+console.log(followed)
+    console.log(currentUser.followings.includes(user?.id))
     useEffect(() => {
         const getFriends = async () => {
             try{
                 const friendList = await axios.get('/users/friends/' + user._id)
-                console.log(user._id)
                 setFriends(friendList.data)
             } catch (e){
                 console.log(e)
             }
         }
         getFriends()
-    }, [user._id])
+    }, [user])
 
     const handleClick = async () => {
         try{
@@ -49,6 +53,7 @@ export default function Rightbar({user}){
         }
 
     }
+    console.log(friends)
 
     const HomeRightbar = () => {
         return (
@@ -75,7 +80,6 @@ export default function Rightbar({user}){
                     <button className='rightbarFollowButton' onClick={handleClick}>
                         {followed ? 'Unfollow' : 'Follow'}
                         {followed ? <Remove/> : <Add/>}
-                        {/*Follow<Add/>*/}
                     </button>
                 )}
                 <h4 className='rightbarTitle'>User Information</h4>
@@ -97,7 +101,7 @@ export default function Rightbar({user}){
                 <h4 className='rightbarTitle'>User friends</h4>
                 <div className="rightbarFollowings">
                     {friends ? friends.map(friend => (
-                        <Link to={'/profile/' + friend.username} style={{textDecoration: 'none'}}>
+                        <Link key={friend._id} to={'/profile/' + friend.username} style={{textDecoration: 'none'}}>
                             <div className="rightbarFollowing">
                                 <img
                                     src={friend.profilePicture ? PF + friend.profilePicture : PF + 'person/noAvatar.png'}

@@ -5,8 +5,6 @@ import {AuthContext} from "../../contex/AuthContex";
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-
-
 export default function Login(){
     const email = useRef()
     const password = useRef()
@@ -43,13 +41,13 @@ export default function Login(){
                             ref={password}/>
                         <button className="loginButton">
                             {isFetching
-                                ?  <CircularProgress color="success" size="20px" disabled={isFetching}/>
+                                ? <CircularProgress color="success" size="20px" disabled={isFetching}/>
                                 : "Log in"}
                         </button>
                         <span className="loginForgot">Forgot password?</span>
                         <button className="loginRegisterButton">
                             {isFetching
-                                ?  <CircularProgress color="success" size="20px"/>
+                                ? <CircularProgress color="success" size="20px"/>
                                 : "Create a New account"}
                         </button>
                     </form>

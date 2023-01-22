@@ -7,10 +7,10 @@ import {Outlet} from "react-router-dom";
 // import Register from "../../pages/register/Register";
 
 export default function LoginPage(){
-    const {user}= useContext(AuthContext)
-    return(
+    const {user} = useContext(AuthContext)
+    return (
         <>
-            {user ? <Navigate to='/'/>:<Login />}
+            {user ? <Navigate to='/'/> : <Login/>}
             <Outlet/>
         </>
     )
