@@ -31,10 +31,10 @@ export default function Post({post}){
 
         try{
             axios.put("/posts/" + post._id + "/like", {userId: currentUser._id})
-        } catch (err){
             setLike(isLiked ? like - 1 : like + 1)
-
             setIsLiked( !isLiked)
+        } catch (err){
+            console.log(err)
         }
     }
 

@@ -1,15 +1,12 @@
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
-// import Login from "./pages/login/Login";
+import {useContext} from "react";
+import {AuthContext} from "./contex/AuthContex";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
-// import Home from "./pages/home/Home";
-// import {AuthContext} from "./contex/AuthContex";
-
-
 import HomePage from "./components/renderPage/HomePage";
 import LoginPage from "./components/renderPage/LoginPage";
-
+import Messenger from "./pages/messenger/Messenger";
 
 
 
@@ -17,12 +14,15 @@ import LoginPage from "./components/renderPage/LoginPage";
 
 
 function App(){
-
+const {user} = useContext(AuthContext)
     return (
         <>
             <Routes>
               <Route path='/' element={<HomePage/>}/>
               <Route path='/login' element={<LoginPage/>}/>
+                <Route path='/messenger'>
+                    {!user ? <Route path='/' element={<HomePage/>}/> :<Route path='/messenger' element={<Messenger/>}/> }
+                </Route>
                 {/*<Route exact path='/'>*/}
                 {/*    {user ? <Route element={<Home/>}/> : <Route element={<Register/>}/> }*/}
 

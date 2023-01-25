@@ -11,17 +11,17 @@ export default function Rightbar({user}){
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const [friends, setFriends] = useState([])
     const {user: currentUser, dispatch} = useContext(AuthContext)
-    // const [followed, setFollowed] = useState(
-    //     currentUser.followings.includes(user?.id)
-    // );
+    const [followed, setFollowed] = useState(
+        currentUser.followings.includes(user?.id)
+    );
 
-    const [followed, setFollowed] = useState(false)
 
-    useEffect(() => {
-        setFollowed(currentUser.followings.includes(user?.id))
-    }, [currentUser, user?.id])
-console.log(followed)
-    console.log(currentUser.followings.includes(user?.id))
+    //
+    // useEffect(() => {
+    //     setFollowed(currentUser.followings.includes(user?._id))
+    // }, [currentUser, user?._id])
+    // console.log(followed)
+
     useEffect(() => {
         const getFriends = async () => {
             try{
@@ -37,24 +37,24 @@ console.log(followed)
     const handleClick = async () => {
         try{
             if(followed) {
-                await axios.put('/users/' + user.id + '/unfollow', {
+                await axios.put('/users/' + user._id + '/unfollow', {
                     userId: currentUser._id
                 });
                 dispatch({type: 'UNFOLLOW', payload: user._id})
             } else {
-                await axios.put('/users/' + user.id + '/follow', {
+                await axios.put('/users/' + user._id + '/follow', {
                     userId: currentUser._id
                 });
                 dispatch({type: 'FOLLOW', payload: user._id})
             }
-            setFollowed( !followed)
+
         } catch (e){
             console.log(e)
         }
-
+        setFollowed( !followed)
     }
     console.log(friends)
-
+    console.log(followed)
     const HomeRightbar = () => {
         return (
             <>
