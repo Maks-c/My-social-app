@@ -9,35 +9,19 @@ import LoginPage from "./components/renderPage/LoginPage";
 import Messenger from "./pages/messenger/Messenger";
 
 
-
-
-
-
 function App(){
-const {user} = useContext(AuthContext)
+    const {user} = useContext(AuthContext)
     return (
         <>
             <Routes>
-              <Route path='/' element={<HomePage/>}/>
-              <Route path='/login' element={<LoginPage/>}/>
-                <Route path='/messenger'>
-                    {!user ? <Route path='/' element={<HomePage/>}/> :<Route path='/messenger' element={<Messenger/>}/> }
+                <Route path='/' element={<HomePage/>}/>
+                <Route>
+                    {user ? <Route path='/' element={<HomePage/>}/> : <Route path='/register' element={<Register/>}/>}
                 </Route>
-                {/*<Route exact path='/'>*/}
-                {/*    {user ? <Route element={<Home/>}/> : <Route element={<Register/>}/> }*/}
-
-                {/*</Route>*/}
-                {/*<Route path='/login'>*/}
-                {/*    {user ? <Navigate to='/'/>:<Route  element={<Login/>}/>}*/}
-                {/*    <Outlet/>*/}
-                {/*</Route>*/}
-                {/*/!*<Route path='/' element={<Home/>}/>*!/*/}
-                {/*<Route path='/register'>*/}
-                {/*    {user ? <Navigate to='/'/> : <Route element={<Register/>}/>}*/}
-                {/*    <Outlet/>*/}
-                {/*</Route>*/}
+                <Route path='/login' element={<LoginPage/>}/>
+                <Route path='/messenger' element={<Messenger/>}/>
                 <Route path='/profile/:username' element={<Profile/>}/>
-                <Route path="*" element={<Register />} />
+                <Route path="*" element={<Register/>}/>
             </Routes>
         </>
     );
