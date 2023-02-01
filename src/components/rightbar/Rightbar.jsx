@@ -15,13 +15,6 @@ export default function Rightbar({user}){
         currentUser.followings.includes(user?.id)
     );
 
-
-    //
-    // useEffect(() => {
-    //     setFollowed(currentUser.followings.includes(user?._id))
-    // }, [currentUser, user?._id])
-    // console.log(followed)
-
     useEffect(() => {
         const getFriends = async () => {
             try{
@@ -37,24 +30,22 @@ export default function Rightbar({user}){
     const handleClick = async () => {
         try{
             if(followed) {
-                await axios.put('/users/' + user._id + '/unfollow', {
+                await axios.put(`/users/${user._id}/unfollow`, {
                     userId: currentUser._id
                 });
                 dispatch({type: 'UNFOLLOW', payload: user._id})
             } else {
-                await axios.put('/users/' + user._id + '/follow', {
+                await axios.put(`/users/${user._id}/follow`, {
                     userId: currentUser._id
                 });
                 dispatch({type: 'FOLLOW', payload: user._id})
             }
-
+            setFollowed( !followed)
         } catch (e){
             console.log(e)
         }
-        setFollowed( !followed)
     }
-    console.log(friends)
-    console.log(followed)
+
     const HomeRightbar = () => {
         return (
             <>
